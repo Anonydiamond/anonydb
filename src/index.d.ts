@@ -11,12 +11,12 @@ declare class AnonyDB {
     /**
      * Sets a value to database 
      */
-    set<T extends string>(
+    set<T extends string, K extends JSON|string|symbol|String>(
         key: T,
-        value: T
+        value: K
     ): void
 
-    on<T extends events>(
+    public on<T extends events>(
         event: T,
         listener: listener[T]
     ): void
@@ -49,7 +49,7 @@ interface options {
 export type events = keyof listener
 
 export type listener = {
-    open: () => void
+    ready: () => void
     error: (err: Error) => void
     change: (Item: item) => void
     'Item Deleted': (Item: item) => void

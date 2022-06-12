@@ -19,7 +19,7 @@ class AnonyDB extends EventEmitter {
 
     update() {
         try {
-            this.currentfile = readFileSync(this.path)
+            this.currentfile = readFileSync(this.path).toString()
             writeFileSync(this.path, JSON.stringify(this.cahce))
         } catch(err) {
             this.emit('error', new Error(err))
@@ -28,7 +28,7 @@ class AnonyDB extends EventEmitter {
 
     get(key) {
         try {
-            return JSON.parse(readFileSync(this.path))[key]
+            return JSON.parse(readFileSync(this.path).toString())[key]
         } catch(err) {
             this.emit('error', new Error(err))
         }
@@ -57,6 +57,7 @@ class AnonyDB extends EventEmitter {
             key,
             value: this.cahce[key]
         })
+        this.cahce = {...this.cahce, ...JSON.parse(readFileSync(this.path).toString())}
         delete this.cahce[key]
         this.update()
     }
